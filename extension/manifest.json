@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Quick Dictionary",
+  "description": "Quick Dictionary extension (add more).", //TODO
+  "version": "1.0",
+  "incognito": "split",
+
+  "permissions": [
+    "http://localhost/"
+    ],
+
+  "browser_action": {
+    // "default_icon": "icon.png", TODO
+    "default_popup": "popup.html"
+  },
+
+  "options_page": "options.html",
+
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      }
+    }
+  },
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
