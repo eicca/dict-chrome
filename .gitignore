@@ -1,3 +1,3 @@
 .lein-repl-history
-target
-extension/js/deps
+/target
+/extension/js/deps
