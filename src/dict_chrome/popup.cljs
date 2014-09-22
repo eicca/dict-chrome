@@ -24,7 +24,7 @@
 
 (defn api-url
   [action]
-  (str "http://192.168.0.158:3000" action))
+  (str "http://stormy-caverns-7598.herokuapp.com" action))
 
 (defn app-translation-loaded
   [raw-response]
