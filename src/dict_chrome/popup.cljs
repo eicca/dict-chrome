@@ -24,7 +24,7 @@
 
 (defn api-url
   [action]
-  (str "http://localhost:3000" action))
+  (str "http://192.168.0.158:3000" action))
 
 (defn app-translation-loaded
   [raw-response]
@@ -82,13 +82,14 @@
 
 (defn typeahead-view
   []
-  [:div
-   [:input {:type "text"
+  [:div.translate-block
+   [:input#translate-input {:type "text"
             :on-key-down process-key-event
             :on-key-up (fn [event]
                          (when (= (.-key event) "Enter")
                            (translate (-> event .-target .-value))))
-            :on-change #(autocomplete (-> % .-target .-value))}]
+            :on-change #(autocomplete (-> % .-target .-value))
+            :placeholder "Type to translate.."}]
    [:ul (for [suggestion @suggestions]
           [suggestion-view suggestion])
     ]])
@@ -96,7 +97,7 @@
 (defn sound-view
   [sound-url]
   (when sound-url
-    [:button {:on-click #(play-sound sound-url)} "sound"]))
+    [:button.sound {:on-click #(play-sound sound-url)}]))
 
 (defn source-view
   [source-url]
@@ -107,23 +108,28 @@
   [translation]
   [:li
    [:span (translation :phrase)]
-   [sound-view (translation :sound)]
-   [source-view (translation :source-url)]])
+   [:span
+    [sound-view (translation :sound)]
+    [source-view (translation :source-url)]
+   ]
+   ])
 
 (defn meta-translation-view
   [meta-translation]
   [:div
-   [:span "Translating to "] [:span (meta-translation :dest)]
-   [sound-view (meta-translation :sound)]
-   [source-view (meta-translation :source-url)]
-   [:ul (for [translation (meta-translation :translations)]
+   [:div.language
+    [:span "Translating to "] [:span (meta-translation :dest)]
+    [sound-view (meta-translation :sound)]
+    [source-view (meta-translation :source-url)]
+   ]
+   [:ul.meanings (for [translation (meta-translation :translations)]
           ^{:key (translation :phrase)} [translation-view translation])]])
 
 (defn app-translation-view
   [app-translation]
-  [:div
-   [:div
-    [:h3 (app-translation :phrase)]
+  [:div.results-block
+   [:div.translated-phrase
+    [:span (app-translation :phrase)]
     [sound-view (app-translation :sound)]]
    [:ul (for [meta-translation (app-translation :meta-translations)]
           ^{:key (meta-translation :dest)} [meta-translation-view meta-translation])]])
@@ -131,7 +137,7 @@
 (defn popup-view
   [_]
   [:div
-   [:h3 "Translations"]
+   [:h3 "Smart Translate"]
    [typeahead-view]
    (when @app-translation
      [app-translation-view @app-translation])])
