@@ -91,8 +91,7 @@
             :on-change #(autocomplete (-> % .-target .-value))
             :placeholder "Type to translate.."}]
    [:ul (for [suggestion @suggestions]
-          [suggestion-view suggestion])
-    ]])
+          [suggestion-view suggestion])]])
 
 (defn sound-view
   [sound-url]
@@ -106,13 +105,11 @@
 
 (defn translation-view
   [translation]
-  [:li
+  [:li {:class (translation :source-name)}
    [:span (translation :phrase)]
    [:span
     [sound-view (translation :sound)]
-    [source-view (translation :source-url)]
-   ]
-   ])
+    [source-view (translation :source-url)]]])
 
 (defn meta-translation-view
   [meta-translation]
@@ -120,8 +117,7 @@
    [:div.language
     [:span "Translating to "] [:span (meta-translation :dest)]
     [sound-view (meta-translation :sound)]
-    [source-view (meta-translation :source-url)]
-   ]
+    [source-view (meta-translation :source-url)]]
    [:ul.meanings (for [translation (meta-translation :translations)]
           ^{:key (translation :phrase)} [translation-view translation])]])
 
