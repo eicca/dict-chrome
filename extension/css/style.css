@@ -27,6 +27,7 @@ h3{
   padding: 15px 10px;
   border-top: 1px solid #ebeff2;
   border-bottom: 1px solid #ebeff2;
+  position: relative;
 }
 input{
   width: 100%;
@@ -39,6 +40,37 @@ input{
   font-size: 16px;
   font-weight: 300;
   padding: 0px 5px;
+  position: relative;
+  z-index: 4;
+}
+input:focus{
+  outline: none;
+  border: 1px solid #434a54;
+}
+.autocomplete-list{
+  width: 280px;
+  position: absolute;
+  background: white;
+  border: 1px solid #ebeff2;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top: none;
+  margin-top: -6px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+.autocomplete-list li{
+  padding: 9px 5px;
+  border-top: 1px solid #ebeff2;
+}
+.autocomplete-list li:hover{
+  text-decoration: underline;
+  color: #fb6e50;
+  cursor: pointer;
+}
+.autocomplete-list li:first-child{
+  border: none;
+  padding-top: 15px;
 }
 .translated-phrase{
   margin: 15px 10px;
@@ -47,6 +79,10 @@ input{
   font-weight: 500;
   font-size: 16px;
 }
+.translated-phrase .sound{
+  top: 4px;
+  margin-left: 10px;
+}
 .sound{
   width: 20px;
   height: 20px;
@@ -54,8 +90,8 @@ input{
   background: url("../img/play.png") no-repeat;
   background-size: 20px 20px;
   position: relative;
-  top: 4px;
   cursor: pointer;
+  margin-right: 10px;
 }
 .sound:focus {
   outline: none;
@@ -73,4 +109,23 @@ input{
 .meanings li{
   font-size: 14px;
   padding: 2px 0px;
+  clear: both;
+}
+.meanings li span.links-block {
+  display: inline-block;
+  float: right;
+}
+.meanings li span a{
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background: no-repeat;
+}
+.meanings li.glosbe span a{
+  background: url("../img/glosbe.jpg");
+  background-size: 100%;
+}
+.meanings li.google span a{
+  background: url("../img/gtranslate.jpg");
+  background-size: 100%;
 }

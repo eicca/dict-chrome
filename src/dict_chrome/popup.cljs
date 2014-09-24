@@ -90,7 +90,7 @@
                            (translate (-> event .-target .-value))))
             :on-change #(autocomplete (-> % .-target .-value))
             :placeholder "Type to translate.."}]
-   [:ul (for [suggestion @suggestions]
+   [:ul.autocomplete-list (for [suggestion @suggestions]
           [suggestion-view suggestion])]])
 
 (defn sound-view
@@ -101,13 +101,13 @@
 (defn source-view
   [source-url]
   (when source-url
-    [:a {:href source-url :target "_blank"} "Source"]))
+    [:a {:href source-url :target "_blank"}]))
 
 (defn translation-view
   [translation]
   [:li {:class (translation :source-name)}
    [:span (translation :phrase)]
-   [:span
+   [:span.links-block
     [sound-view (translation :sound)]
     [source-view (translation :source-url)]]])
 
