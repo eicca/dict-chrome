@@ -24,7 +24,7 @@
 
 (defn api-url
   [action]
-  (str "http://stormy-caverns-7598.herokuapp.com" action))
+  (str "http://localhost:3000" action))
 
 (defn app-translation-loaded
   [raw-response]
@@ -82,15 +82,15 @@
 
 (defn typeahead-view
   []
-  [:div.translate-block
-   [:input#translate-input {:type "text"
+  [:div.typeahead
+   [:input {:type "text"
             :on-key-down process-key-event
             :on-key-up (fn [event]
                          (when (= (.-key event) "Enter")
                            (translate (-> event .-target .-value))))
             :on-change #(autocomplete (-> % .-target .-value))
             :placeholder "Type to translate.."}]
-   [:ul.autocomplete-list (for [suggestion @suggestions]
+   [:ul (for [suggestion @suggestions]
           [suggestion-view suggestion])]])
 
 (defn sound-view
@@ -101,42 +101,43 @@
 (defn source-view
   [source-url]
   (when source-url
-    [:a {:href source-url :target "_blank"}]))
+    [:a {:href source-url :target "_blank"} "Source ->"]))
 
 (defn translation-view
   [translation]
   [:li {:class (translation :source-name)}
    [:span (translation :phrase)]
    [:span.links-block
-    [sound-view (translation :sound)]
+    [sound-view (first (translation :sounds))]
     [source-view (translation :source-url)]]])
 
 (defn meta-translation-view
   [meta-translation]
   [:div
-   [:div.language
+   [:div.meta-translation-header
     [:span "Translating to "] [:span (meta-translation :dest)]
     [sound-view (meta-translation :sound)]
     [source-view (meta-translation :source-url)]]
-   [:ul.meanings (for [translation (meta-translation :translations)]
-          ^{:key (translation :phrase)} [translation-view translation])]])
+   [:ul.translations (for [translation (take 3 (meta-translation :translations))]
+                       ^{:key (translation :phrase)} [translation-view translation])]])
 
 (defn app-translation-view
-  [app-translation]
-  [:div.results-block
-   [:div.translated-phrase
-    [:span (app-translation :phrase)]
-    [sound-view (app-translation :sound)]]
-   [:ul (for [meta-translation (app-translation :meta-translations)]
+  [_]
+  [:div
+   [:button {:on-click #(reset! app-translation {})} "Back"]
+   [:div.from-phrase
+    [:span (@app-translation :phrase)]
+    [sound-view (@app-translation :sounds)]]
+   [:ul (for [meta-translation (@app-translation :meta-translations)]
           ^{:key (meta-translation :dest)} [meta-translation-view meta-translation])]])
 
 (defn popup-view
   [_]
   [:div
    [:h3 "Smart Translate"]
-   [typeahead-view]
-   (when @app-translation
-     [app-translation-view @app-translation])])
+   (if (empty? @app-translation)
+     [typeahead-view]
+     [app-translation-view])])
 
 (defn run
   []

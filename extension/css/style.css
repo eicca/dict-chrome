@@ -1,11 +1,11 @@
-*{
+* {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   margin: 0;
   padding: 0;
 }
 
-body{
+body {
   width: 300px;
   margin: 0;
   padding: 0;
@@ -15,21 +15,25 @@ body{
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
-.clear{
+
+.clear {
   clear: both;
 }
-h3{
+
+h3 {
   font-family: 'Roboto', sans-serif;
   padding: 15px 10px;
   font-size: 20px;
 }
-.translate-block{
+
+.typeahead {
   padding: 15px 10px;
   border-top: 1px solid #ebeff2;
   border-bottom: 1px solid #ebeff2;
   position: relative;
 }
-input{
+
+.typeahead input {
   width: 100%;
   height: 40px;
   border-radius: 5px;
@@ -43,11 +47,13 @@ input{
   position: relative;
   z-index: 4;
 }
-input:focus{
+
+.typeahead input:focus {
   outline: none;
   border: 1px solid #434a54;
 }
-.autocomplete-list{
+
+.typeahead ul {
   width: 280px;
   position: absolute;
   background: white;
@@ -59,31 +65,38 @@ input:focus{
   box-sizing: border-box;
   z-index: 2;
 }
-.autocomplete-list li{
+
+.typeahead ul li {
   padding: 9px 5px;
   border-top: 1px solid #ebeff2;
 }
-.autocomplete-list li:hover{
+
+.typeahead ul li:hover {
   text-decoration: underline;
   color: #fb6e50;
   cursor: pointer;
 }
-.autocomplete-list li:first-child{
+
+.typeahead ul li:first-child {
   border: none;
   padding-top: 15px;
 }
-.translated-phrase{
+
+.from-phrase {
   margin: 15px 10px;
 }
-.translated-phrase span{
+
+.from-phrase span {
   font-weight: 500;
   font-size: 16px;
 }
-.translated-phrase .sound{
+
+.from-phrase .sound {
   top: 4px;
   margin-left: 10px;
 }
-.sound{
+
+.sound {
   width: 20px;
   height: 20px;
   border: none;
@@ -93,39 +106,47 @@ input:focus{
   cursor: pointer;
   margin-right: 10px;
 }
+
 .sound:focus {
   outline: none;
 }
-.language{
+
+.meta-translation-header {
   color: white;
   background: #434a54;
   padding: 15px 10px;
 }
-.meanings{
+
+.translations {
   padding-left: 20px;
   list-style-type: disc;
   margin: 5px 10px;
 }
-.meanings li{
+
+.translations li {
   font-size: 14px;
   padding: 2px 0px;
   clear: both;
 }
-.meanings li span.links-block {
+
+.translations li span.links-block {
   display: inline-block;
   float: right;
 }
-.meanings li span a{
+
+.translations li span a {
   width: 20px;
   height: 20px;
   display: inline-block;
   background: no-repeat;
 }
-.meanings li.glosbe span a{
+
+.translations li.glosbe span a {
   background: url("../img/glosbe.jpg");
   background-size: 100%;
 }
-.meanings li.google span a{
+
+.translations li.google span a {
   background: url("../img/gtranslate.jpg");
   background-size: 100%;
 }
