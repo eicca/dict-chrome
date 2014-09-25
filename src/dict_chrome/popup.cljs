@@ -83,15 +83,19 @@
 (defn typeahead-view
   []
   [:div.typeahead
-   [:input {:type "text"
-            :on-key-down process-key-event
-            :on-key-up (fn [event]
-                         (when (= (.-key event) "Enter")
-                           (translate (-> event .-target .-value))))
-            :on-change #(autocomplete (-> % .-target .-value))
-            :placeholder "Type to translate.."}]
-   [:ul (for [suggestion @suggestions]
-          [suggestion-view suggestion])]])
+   [:div.input-group
+    [:input {:type "text"
+             :on-key-down process-key-event
+             :on-key-up (fn [event]
+                          (when (= (.-key event) "Enter")
+                            (translate (-> event .-target .-value))))
+             :on-change #(autocomplete (-> % .-target .-value))
+             :placeholder "Type to translate.."}]
+    [:span
+     [:button @fallback-locale]]]
+   (when-not (empty? @suggestions)
+     [:ul (for [suggestion @suggestions]
+            [suggestion-view suggestion])])])
 
 (defn sound-view
   [sound-url]
@@ -124,7 +128,6 @@
 (defn app-translation-view
   [_]
   [:div
-   [:button {:on-click #(reset! app-translation {})} "Back"]
    [:div.from-phrase
     [:span (@app-translation :phrase)]
     [sound-view (@app-translation :sounds)]]

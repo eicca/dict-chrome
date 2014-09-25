@@ -12,7 +12,6 @@ body {
   background: #ffffff;
   overflow: hidden;
   color: #434a54;
-  font-family: 'Roboto', sans-serif;
   font-size: 14px;
 }
 
@@ -21,9 +20,11 @@ body {
 }
 
 h3 {
-  font-family: 'Roboto', sans-serif;
-  padding: 15px 10px;
+  padding: 8px 10px;
   font-size: 20px;
+  background-color: rgb(44, 62, 80);
+  color: white;
+  font-weight: 400;
 }
 
 .typeahead {
@@ -33,24 +34,36 @@ h3 {
   position: relative;
 }
 
-.typeahead input {
+.typeahead .input-group {
+  width: 100%;
+  display: table;
+}
+
+.typeahead .input-group input {
   width: 100%;
   height: 40px;
   border-radius: 5px;
-  -webkit-box-sizing: border-box;‌​
+  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border: 1px solid #e6eaed;
+  border: 2px solid #e6eaed;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0px 5px;
   position: relative;
   z-index: 4;
+  display: table-cell;
+
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-.typeahead input:focus {
+.typeahead .input-group input:focus {
   outline: none;
-  border: 1px solid #434a54;
+  border: 2px solid #2c3e50;;
+}
+
+.typeahead .input-group span {
+  display: table-cell;
 }
 
 .typeahead ul {
@@ -72,9 +85,8 @@ h3 {
 }
 
 .typeahead ul li:hover {
-  text-decoration: underline;
-  color: #fb6e50;
   cursor: pointer;
+  background-color: #ebeff2;
 }
 
 .typeahead ul li:first-child {
