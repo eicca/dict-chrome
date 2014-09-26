@@ -22,8 +22,8 @@ body {
 h3 {
   padding: 8px 10px;
   font-size: 20px;
-  background-color: rgb(44, 62, 80);
-  color: white;
+  background-color: #203c43;
+  color: #e5e5e5;
   font-weight: 400;
 }
 
@@ -37,33 +37,55 @@ h3 {
 .typeahead .input-group {
   width: 100%;
   display: table;
+  position: relative;
+  border-collapse: separate;
+  font-size: 16px;
 }
 
 .typeahead .input-group input {
   width: 100%;
   height: 40px;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   border: 2px solid #e6eaed;
-  font-size: 16px;
   font-weight: 400;
   padding: 0px 5px;
   position: relative;
   z-index: 4;
   display: table-cell;
-
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 .typeahead .input-group input:focus {
   outline: none;
-  border: 2px solid #2c3e50;;
+  border: 2px solid #111925;;
 }
 
 .typeahead .input-group span {
   display: table-cell;
+}
+
+.typeahead .input-group span button{
+  position: relative;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #203c43;
+  border: 1px solid transparent;
+  color: #e5e5e5;
+  outline: none;
+  font-weight: 400;
+  height: 40px;
+  width: 100%;
+  min-width: 50px;
+  z-index: 4;
+  text-transform: uppercase;
+}
+
+.typeahead .input-group span button:hover{
+  background: #2e6a78;
 }
 
 .typeahead ul {
@@ -111,8 +133,8 @@ h3 {
 .sound {
   width: 20px;
   height: 20px;
+  font-family: 'fontello';
   border: none;
-  background: url("../img/play.png") no-repeat;
   background-size: 20px 20px;
   position: relative;
   cursor: pointer;
@@ -125,8 +147,12 @@ h3 {
 
 .meta-translation-header {
   color: white;
-  background: #434a54;
-  padding: 15px 10px;
+  background: #203c43;
+  padding: 8px 10px;
+}
+
+.meta-translation-header span{
+  text-transform: uppercase;
 }
 
 .translations {
@@ -147,18 +173,6 @@ h3 {
 }
 
 .translations li span a {
-  width: 20px;
-  height: 20px;
   display: inline-block;
   background: no-repeat;
-}
-
-.translations li.glosbe span a {
-  background: url("../img/glosbe.jpg");
-  background-size: 100%;
-}
-
-.translations li.google span a {
-  background: url("../img/gtranslate.jpg");
-  background-size: 100%;
 }

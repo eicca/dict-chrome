@@ -24,7 +24,7 @@
 
 (defn api-url
   [action]
-  (str "http://localhost:3000" action))
+  (str "http://stormy-caverns-7598.herokuapp.com" action))
 
 (defn app-translation-loaded
   [raw-response]
@@ -100,7 +100,7 @@
 (defn sound-view
   [sound-url]
   (when sound-url
-    [:button.sound {:on-click #(play-sound sound-url)}]))
+    [:button.sound {:on-click #(play-sound sound-url)} "A"]))
 
 (defn source-view
   [source-url]
@@ -119,9 +119,10 @@
   [meta-translation]
   [:div
    [:div.meta-translation-header
-    [:span "Translating to "] [:span (meta-translation :dest)]
-    [sound-view (meta-translation :sound)]
-    [source-view (meta-translation :source-url)]]
+    [:div.language-block
+     [:span] [:span (meta-translation :dest)]
+     [sound-view (meta-translation :sound)]
+     [source-view (meta-translation :source-url)]]]
    [:ul.translations (for [translation (take 3 (meta-translation :translations))]
                        ^{:key (translation :phrase)} [translation-view translation])]])
 
