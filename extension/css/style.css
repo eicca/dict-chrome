@@ -15,6 +15,11 @@ body {
   font-size: 14px;
 }
 
+[placeholder]:focus::-webkit-input-placeholder {
+  transition: opacity 0.5s 1.5s ease;
+  opacity: 0.2;
+}
+
 .clear {
   clear: both;
 }
@@ -68,7 +73,7 @@ h3 {
   display: table-cell;
 }
 
-.typeahead .input-group span button{
+.typeahead .input-group span button {
   position: relative;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -84,7 +89,7 @@ h3 {
   text-transform: uppercase;
 }
 
-.typeahead .input-group span button:hover{
+.typeahead .input-group span button:hover {
   background: #2e6a78;
 }
 
@@ -151,7 +156,7 @@ h3 {
   padding: 8px 10px;
 }
 
-.meta-translation-header span{
+.meta-translation-header span {
   text-transform: uppercase;
 }
 

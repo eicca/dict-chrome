@@ -90,7 +90,7 @@
                           (when (= (.-key event) "Enter")
                             (translate (-> event .-target .-value))))
              :on-change #(autocomplete (-> % .-target .-value))
-             :placeholder "Type to translate.."}]
+             :placeholder "start typing here ..."}]
     [:span
      [:button @fallback-locale]]]
    (when-not (empty? @suggestions)
