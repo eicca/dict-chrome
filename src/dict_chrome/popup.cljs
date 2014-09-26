@@ -7,6 +7,13 @@
 
 ; Atoms ==============
 
+(def active-view (atom (keyword "")))
+
+(defn show!
+  [view-name]
+  (when-not (= @active-view view-name)
+    (reset! active-view view-name)))
+
 (def app-translation (atom {}))
 
 (def suggestions (atom {}))
@@ -29,14 +36,16 @@
 (defn app-translation-loaded
   [raw-response]
   (let [response (clojure.walk/keywordize-keys raw-response)]
-    (reset! app-translation response)))
+    (reset! app-translation response))
+  (show! :app-translation))
 
 (defn suggestions-loaded
   [raw-response]
   (let [response (clojure.walk/keywordize-keys raw-response)]
     (reset! suggestions (take 7 response))
     (when-let [first-item (first response)]
-      (reset! fallback-locale (first-item :locale)))))
+      (reset! fallback-locale (first-item :locale))))
+  (show! :suggestions))
 
 (defn get-suggestions
   [params]
@@ -72,7 +81,7 @@
 
 (defn process-key-event
   [event])
-  ; (case (.-key event)))
+; (case (.-key event)))
 
 (defn suggestion-view
   [{:keys [phrase locale]}]
@@ -80,9 +89,9 @@
                      {:phrase phrase :from locale :dest-locales (dest-locales)})}
    phrase])
 
-(defn typeahead-view
+(defn phrase-input-view
   []
-  [:div.typeahead
+  [:div.phrase-input-block
    [:div.input-group
     [:input {:type "text"
              :on-key-down process-key-event
@@ -92,10 +101,12 @@
              :on-change #(autocomplete (-> % .-target .-value))
              :placeholder "start typing here ..."}]
     [:span
-     [:button @fallback-locale]]]
-   (when-not (empty? @suggestions)
-     [:ul (for [suggestion @suggestions]
-            [suggestion-view suggestion])])])
+     [:button @fallback-locale]]]])
+
+(defn suggestions-view
+  []
+  [:ul.suggestions (for [suggestion @suggestions]
+                     [suggestion-view suggestion])])
 
 (defn sound-view
   [sound-url]
@@ -139,9 +150,11 @@
   [_]
   [:div
    [:h3 "Smart Translate"]
-   (if (empty? @app-translation)
-     [typeahead-view]
-     [app-translation-view])])
+   [phrase-input-view]
+   (case @active-view
+     :suggestions [suggestions-view]
+     :app-translation [app-translation-view]
+     [:div.empty-view])])
 
 (defn run
   []
