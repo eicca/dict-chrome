@@ -18,14 +18,28 @@
 
 (def suggestions (atom {}))
 
-(def fallback-locale (atom "en"))
+; Locales ===============
+
+(def current-locale (atom "en"))
 
 ; TODO take it from settings.
 (def user-locales ["en" "de" "ru"])
 
+(def cycled-user-locales (cycle user-locales))
+
+(defn set-next-current-locale!
+  []
+  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale)
+        next-locale (nth cycled-user-locales (inc current-locale-index))]
+    (reset! current-locale next-locale))
+  ; (case @active-view
+  ;   :suggestions [suggestions-view]
+  ;   :app-translation [app-translation-view]
+  )
+
 (defn dest-locales
   []
-  (remove #(= % @fallback-locale) user-locales))
+  (remove #(= % @current-locale) user-locales))
 
 ; API ================
 
@@ -44,7 +58,7 @@
   (let [response (clojure.walk/keywordize-keys raw-response)]
     (reset! suggestions (take 7 response))
     (when-let [first-item (first response)]
-      (reset! fallback-locale (first-item :locale))))
+      (reset! current-locale (first-item :locale))))
   (show! :suggestions))
 
 (defn get-suggestions
@@ -61,7 +75,7 @@
 
 (defn translate
   [input-phrase]
-  (get-translations {:from @fallback-locale :dest-locales (dest-locales) :phrase input-phrase}))
+  (get-translations {:from @current-locale :dest-locales (dest-locales) :phrase input-phrase}))
 
 ; Utils ==========
 
@@ -77,7 +91,7 @@
   (when (> (count input-value) 2)
     (get-suggestions {:phrase input-value
                       :locales user-locales
-                      :fallback-locale @fallback-locale})))
+                      :fallback-locale @current-locale})))
 
 (defn process-key-event
   [event])
@@ -101,7 +115,7 @@
              :on-change #(autocomplete (-> % .-target .-value))
              :placeholder "start typing here ..."}]
     [:span
-     [:button @fallback-locale]]]])
+     [:button {:on-click set-next-current-locale!} @current-locale]]]])
 
 (defn suggestions-view
   []
