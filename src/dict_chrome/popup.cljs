@@ -125,12 +125,12 @@
 (defn sound-view
   [sound-url]
   (when sound-url
-    [:button.sound {:on-click #(play-sound sound-url)} "A"]))
+    [:button.sound.icon-volume {:on-click #(play-sound sound-url)} " "]))
 
 (defn source-view
   [source-url]
   (when source-url
-    [:a {:href source-url :target "_blank"} "Source ->"]))
+    [:a.icon-share {:href source-url :target "_blank"} " "]))
 
 (defn translation-view
   [translation]
