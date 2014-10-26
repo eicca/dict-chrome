@@ -45,7 +45,7 @@
 
 (defn api-url
   [action]
-  (str "http://stormy-caverns-7598.herokuapp.com" action))
+  (str "http://dict-server.random-data.com" action))
 
 (defn app-translation-loaded
   [raw-response]
@@ -175,4 +175,3 @@
   (reagent/render-component [popup-view] (.-body js/document)))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))
-
