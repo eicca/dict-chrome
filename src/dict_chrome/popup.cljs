@@ -135,10 +135,8 @@
 (defn translation-view
   [translation]
   [:li {:class (translation :source-name)}
-   [:span (translation :phrase)]
-   [:span.links-block
-    [sound-view (first (translation :sounds))]
-    [source-view (translation :source-url)]]])
+   [:a {:href (translation :source-url)} (translation :phrase)]
+   [sound-view (first (translation :sounds))]])
 
 (defn meta-translation-view
   [meta-translation]
@@ -146,7 +144,6 @@
    [:div.meta-translation-header
     [:div.language-block
      [:span] [:span (meta-translation :dest)]
-     [sound-view (meta-translation :sound)]
      [source-view (meta-translation :source-url)]]]
    [:ul.translations (for [translation (take 3 (meta-translation :translations))]
                        ^{:key (translation :phrase)} [translation-view translation])]])
@@ -155,8 +152,7 @@
   [_]
   [:div
    [:div.from-phrase
-    [:span (@app-translation :phrase)]
-    [sound-view (@app-translation :sounds)]]
+    [:a {:href (@app-translation :wiktionary-link) :target "_blank"} (@app-translation :phrase)]]
    [:ul (for [meta-translation (@app-translation :meta-translations)]
           ^{:key (meta-translation :dest)} [meta-translation-view meta-translation])]])
 

@@ -116,9 +116,11 @@ h3 {
   margin: 15px 10px;
 }
 
-.from-phrase span {
+.from-phrase a {
   font-weight: 500;
   font-size: 16px;
+  color: #111925;
+  text-decoration: underline;
 }
 
 .from-phrase .sound {
@@ -132,7 +134,6 @@ h3 {
   border: none;
   position: relative;
   cursor: pointer;
-  margin-right: 10px;
   background: none;
 }
 
@@ -142,7 +143,7 @@ h3 {
 
 .meta-translation-header {
   color: white;
-  padding: 0px 10px 8px 0px;
+  padding: 0px 10px 0px 0px;
   border-top: 5px solid #203c43;
 }
 
@@ -158,7 +159,6 @@ h3 {
   display: inline-block;
   text-align: center;
   position: relative;
-  top: -2px;
 }
 
 .language-block .icon-share {
@@ -167,26 +167,33 @@ h3 {
   text-decoration: none;
 }
 
-.links-block .icon-export a{
+.icon-export a {
   color: #434a54;
-}
-
-.translations {
-  margin: 5px 10px;
 }
 
 .translations li {
   font-size: 14px;
-  padding: 2px 0px;
+  padding: 5px 10px;
   clear: both;
 }
 
-.translations li span.links-block {
+.translations li:nth-child(odd) {
+  background: #e6eaed;
+}
+
+.translations li button {
   display: inline-block;
   float: right;
 }
 
-.translations li span a {
+.translations li a {
   display: inline-block;
   background: no-repeat;
+  text-decoration: none;
+  color: #434a54;
+  font-weight: 400;
+}
+
+.translations li a:hover {
+  text-decoration: underline;
 }
