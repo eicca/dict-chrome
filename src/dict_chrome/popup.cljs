@@ -132,10 +132,16 @@
   (when source-url
     [:a.icon-share {:href source-url :target "_blank"} " "]))
 
+(defn lexical-view
+  [definitions]
+  [:ul.lexical (for [definition definitions]
+                 definition)])
+
 (defn translation-view
   [translation]
   [:li {:class (translation :source-name)}
-   [:a {:href (translation :source-url)} (translation :phrase)]
+   [:a {:href (translation :source-url) :target "_blank"} (translation :phrase)]
+   [lexical-view (translation :lexical)]
    [sound-view (first (translation :sounds))]])
 
 (defn meta-translation-view
@@ -152,6 +158,7 @@
   [_]
   [:div
    [:div.from-phrase
+    [:span "Translating: "]
     [:a {:href (@app-translation :wiktionary-link) :target "_blank"} (@app-translation :phrase)]]
    [:ul (for [meta-translation (@app-translation :meta-translations)]
           ^{:key (meta-translation :dest)} [meta-translation-view meta-translation])]])

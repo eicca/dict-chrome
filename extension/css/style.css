@@ -197,3 +197,9 @@ h3 {
 .translations li a:hover {
   text-decoration: underline;
 }
+
+.translations li .lexical {
+  display: inline;
+  font-size: 10px;
+  margin-left: 2px;
+}
