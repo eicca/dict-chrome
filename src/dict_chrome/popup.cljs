@@ -24,6 +24,9 @@
 
 (def active-suggestion-index (atom 0))
 
+(def phrase-input-val (atom ""))
+
+
 ; Locales ===============
 
 (def current-locale (atom "en"))
@@ -94,7 +97,7 @@
 ; DIM =============
 
 (defn autocomplete
-  [input-value]
+  [_ _ _ input-value]
   (when (> (count input-value) 2)
     (get-suggestions {:phrase input-value
                       :locales user-locales
@@ -105,9 +108,12 @@
   (when (and (>= new-index 0) (< new-index (count @suggestions)))
     (reset! active-suggestion-index new-index)))
 
-(defn autocomplete-phrase
+(defn apply-suggestion
   []
-  (.log js/console @active-suggestion-index))
+  (let [suggestion (first
+                    (filter #(= (% :index) @active-suggestion-index)
+                            @suggestions))]
+    (reset! phrase-input-val (suggestion :phrase))))
 
 (defn process-key-event
   [event]
@@ -115,7 +121,7 @@
     "ArrowDown" (change-active-suggestion (+ @active-suggestion-index 1))
     "ArrowUp" (change-active-suggestion (- @active-suggestion-index 1))
     "Tab" (#(.preventDefault event)
-           (autocomplete-phrase))
+           (apply-suggestion))
     :default))
 
 (defn phrase-input-view
@@ -123,11 +129,12 @@
   [:div.phrase-input-block
    [:div.input-group
     [:input {:type "text"
+             :value @phrase-input-val
              :on-key-down process-key-event
              :on-key-up (fn [event]
                           (when (= (.-key event) "Enter")
                             (translate (-> event .-target .-value))))
-             :on-change #(autocomplete (-> % .-target .-value))
+             :on-change #(reset! phrase-input-val (-> % .-target .-value))
              :placeholder "start typing here ..."}]
     [:span
      [:button {:on-click set-next-current-locale!} @current-locale]]]])
@@ -198,6 +205,7 @@
 
 (defn run
   []
-  (reagent/render-component [popup-view] (.-body js/document)))
+  (reagent/render-component [popup-view] (.-body js/document))
+  (add-watch phrase-input-val :phrase-input-watcher autocomplete))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))
