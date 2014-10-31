@@ -112,6 +112,11 @@ h3 {
   padding-top: 15px;
 }
 
+li.active {
+  font-weight: 800;
+  background-color: #fafafa;
+}
+
 .from-phrase {
   margin: 15px 10px;
 }

@@ -5,6 +5,10 @@
 
 (enable-console-print!)
 
+(defn indexate
+  [seq]
+  (map-indexed (fn [idx itm] (conj {:index idx} itm)) seq))
+
 ; Atoms ==============
 
 (def active-view (atom (keyword "")))
@@ -17,6 +21,8 @@
 (def app-translation (atom {}))
 
 (def suggestions (atom {}))
+
+(def active-suggestion-index (atom 0))
 
 ; Locales ===============
 
@@ -56,7 +62,8 @@
 (defn suggestions-loaded
   [raw-response]
   (let [response (clojure.walk/keywordize-keys raw-response)]
-    (reset! suggestions (take 7 response))
+    (reset! active-suggestion-index 0)
+    (reset! suggestions (indexate (take 7 response)))
     (when-let [first-item (first response)]
       (reset! current-locale (first-item :locale))))
   (show! :suggestions))
@@ -84,7 +91,7 @@
   (let [audio (js/Audio. sound-url)]
     (.play audio)))
 
-; DOM =============
+; DIM =============
 
 (defn autocomplete
   [input-value]
@@ -93,15 +100,23 @@
                       :locales user-locales
                       :fallback-locale @current-locale})))
 
-(defn process-key-event
-  [event])
-; (case (.-key event)))
+(defn change-active-suggestion
+  [new-index]
+  (when (and (>= new-index 0) (< new-index (count @suggestions)))
+    (reset! active-suggestion-index new-index)))
 
-(defn suggestion-view
-  [{:keys [phrase locale]}]
-  [:li {:on-click #(get-translations
-                     {:phrase phrase :from locale :dest-locales (dest-locales)})}
-   phrase])
+(defn autocomplete-phrase
+  []
+  (.log js/console @active-suggestion-index))
+
+(defn process-key-event
+  [event]
+  (case (.-key event)
+    "ArrowDown" (change-active-suggestion (+ @active-suggestion-index 1))
+    "ArrowUp" (change-active-suggestion (- @active-suggestion-index 1))
+    "Tab" (#(.preventDefault event)
+           (autocomplete-phrase))
+    :default))
 
 (defn phrase-input-view
   []
@@ -116,6 +131,14 @@
              :placeholder "start typing here ..."}]
     [:span
      [:button {:on-click set-next-current-locale!} @current-locale]]]])
+
+
+(defn suggestion-view
+  [{:keys [phrase locale index]}]
+  [:li {:class (when (= index @active-suggestion-index) "active")
+        :on-click #(get-translations
+                    {:phrase phrase :from locale :dest-locales (dest-locales)})}
+   phrase])
 
 (defn suggestions-view
   []
