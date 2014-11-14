@@ -1,7 +1,8 @@
 (ns dict-chrome.popup
   (:require clojure.walk
             [reagent.core :as reagent :refer [atom]]
-            [ajax.core :refer [GET]]))
+            [ajax.core :refer [GET]]
+            [dict-chrome.api-client :as api-client]))
 
 (enable-console-print!)
 
@@ -38,8 +39,7 @@
 
 (defn set-next-current-locale!
   []
-  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale)
-        next-locale (nth cycled-user-locales (inc current-locale-index))]
+  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale) next-locale (nth cycled-user-locales (inc current-locale-index))]
     (reset! current-locale next-locale))
   ; (case @active-view
   ;   :suggestions [suggestions-view]
@@ -71,21 +71,12 @@
       (reset! current-locale (first-item :locale))))
   (show! :suggestions))
 
-(defn get-suggestions
-  [params]
-  (GET (api-url "/suggestions")
-       {:params params
-        :handler suggestions-loaded}))
-
-(defn get-translations
-  [params]
-  (GET (api-url "/translations")
-       {:params params
-        :handler app-translation-loaded}))
-
 (defn translate
   [input-phrase]
-  (get-translations {:from @current-locale :dest-locales (dest-locales) :phrase input-phrase}))
+  (api-client/get-translations app-translation-loaded
+                               {:from @current-locale
+                                :dest-locales (dest-locales)
+                                :phrase input-phrase}))
 
 ; Utils ==========
 
@@ -99,9 +90,10 @@
 (defn autocomplete
   [_ _ _ input-value]
   (when (> (count input-value) 2)
-    (get-suggestions {:phrase input-value
-                      :locales user-locales
-                      :fallback-locale @current-locale})))
+    (api-client/get-suggestions suggestions-loaded
+                                {:phrase input-value
+                                 :locales user-locales
+                                 :fallback-locale @current-locale})))
 
 (defn change-active-suggestion
   [new-index]
@@ -143,8 +135,10 @@
 (defn suggestion-view
   [{:keys [phrase locale index]}]
   [:li {:class (when (= index @active-suggestion-index) "active")
-        :on-click #(get-translations
-                    {:phrase phrase :from locale :dest-locales (dest-locales)})}
+        :on-click #(api-client/get-translations
+                    app-translation-loaded
+                    {:phrase phrase :from locale
+                     :dest-locales (dest-locales)})}
    phrase])
 
 (defn suggestions-view
