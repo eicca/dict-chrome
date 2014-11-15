@@ -1,7 +1,6 @@
 (ns dict-chrome.popup
   (:require clojure.walk
             [reagent.core :as reagent :refer [atom]]
-            [ajax.core :refer [GET]]
             [dict-chrome.api-client :as api-client]))
 
 (enable-console-print!)
@@ -39,12 +38,9 @@
 
 (defn set-next-current-locale!
   []
-  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale) next-locale (nth cycled-user-locales (inc current-locale-index))]
-    (reset! current-locale next-locale))
-  ; (case @active-view
-  ;   :suggestions [suggestions-view]
-  ;   :app-translation [app-translation-view]
-  )
+  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale)
+        next-locale (nth cycled-user-locales (inc current-locale-index))]
+    (reset! current-locale next-locale)))
 
 (defn dest-locales
   []
@@ -86,6 +82,7 @@
     (.play audio)))
 
 ; DIM =============
+
 
 (defn autocomplete
   [_ _ _ input-value]

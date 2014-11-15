@@ -13,8 +13,8 @@
 
 (defn get-suggestions
   [handler params]
-  (get-resource "/suggestions"))
+  (get-resource "/suggestions" handler params))
 
 (defn get-translations
   [handler params]
-  (get-resource "/translations"))
+  (get-resource "/translations" handler params))

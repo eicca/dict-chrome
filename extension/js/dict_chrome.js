@@ -14,4 +14,4 @@ goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.c
 goog.addDependency("../ajax/core.js", ['ajax.core'], ['goog.net.XhrManager', 'goog.net.XhrIo', 'goog.Uri.QueryData', 'goog.Uri', 'cljs.core', 'goog.net.EventType', 'goog.structs', 'goog.json.Serializer', 'clojure.string', 'cljs.reader', 'goog.events', 'goog.net.ErrorCode']);
 goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
 goog.addDependency("../dict_chrome/api_client.js", ['dict_chrome.api_client'], ['ajax.core', 'cljs.core']);
-goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['ajax.core', 'reagent.core', 'cljs.core', 'dict_chrome.api_client', 'clojure.walk']);
+goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['reagent.core', 'cljs.core', 'dict_chrome.api_client', 'clojure.walk']);
