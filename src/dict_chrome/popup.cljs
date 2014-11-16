@@ -1,7 +1,8 @@
 (ns dict-chrome.popup
   (:require clojure.walk
             [reagent.core :as reagent :refer [atom]]
-            [dict-chrome.api-client :as api-client]))
+            [dict-chrome.api-client :as api-client]
+            [dict-chrome.locales :as locales]))
 
 (enable-console-print!)
 
@@ -31,26 +32,17 @@
 
 (def current-locale (atom "en"))
 
-; TODO take it from settings.
-(def user-locales ["en" "de" "ru"])
-
-(def cycled-user-locales (cycle user-locales))
-
 (defn set-next-current-locale!
   []
-  (let [current-locale-index (.indexOf (to-array user-locales) @current-locale)
-        next-locale (nth cycled-user-locales (inc current-locale-index))]
+  (let [current-locale-index (.indexOf (to-array locales/user-locales) @current-locale)
+        next-locale (nth locales/cycled-user-locales (inc current-locale-index))]
     (reset! current-locale next-locale)))
 
 (defn dest-locales
   []
-  (remove #(= % @current-locale) user-locales))
+  (remove #(= % @current-locale) locales/user-locales))
 
 ; API ================
-
-(defn api-url
-  [action]
-  (str "http://dict-server.random-data.com" action))
 
 (defn app-translation-loaded
   [raw-response]
@@ -89,7 +81,7 @@
   (when (> (count input-value) 2)
     (api-client/get-suggestions suggestions-loaded
                                 {:phrase input-value
-                                 :locales user-locales
+                                 :locales locales/user-locales
                                  :fallback-locale @current-locale})))
 
 (defn change-active-suggestion
