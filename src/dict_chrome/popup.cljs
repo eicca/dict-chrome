@@ -2,7 +2,8 @@
   (:require clojure.walk
             [reagent.core :as reagent :refer [atom]]
             [dict-chrome.api-client :as api-client]
-            [dict-chrome.locales :as locales]))
+            [dict-chrome.typeahead :as typeahead]
+            [dict-chrome.locales :as locales :refer [current-locale]]))
 
 (enable-console-print!)
 
@@ -27,21 +28,6 @@
 
 (def phrase-input-val (atom ""))
 
-
-; Locales ===============
-
-(def current-locale (atom "en"))
-
-(defn set-next-current-locale!
-  []
-  (let [current-locale-index (.indexOf (to-array locales/user-locales) @current-locale)
-        next-locale (nth locales/cycled-user-locales (inc current-locale-index))]
-    (reset! current-locale next-locale)))
-
-(defn dest-locales
-  []
-  (remove #(= % @current-locale) locales/user-locales))
-
 ; API ================
 
 (defn app-translation-loaded
@@ -56,14 +42,14 @@
     (reset! active-suggestion-index 0)
     (reset! suggestions (indexate (take 7 response)))
     (when-let [first-item (first response)]
-      (reset! current-locale (first-item :locale))))
+      (locales/set! (first-item :locale))))
   (show! :suggestions))
 
 (defn translate
   [input-phrase]
   (api-client/get-translations app-translation-loaded
                                {:from @current-locale
-                                :dest-locales (dest-locales)
+                                :dest-locales (locales/dest-locales)
                                 :phrase input-phrase}))
 
 ; Utils ==========
@@ -118,7 +104,7 @@
              :on-change #(reset! phrase-input-val (-> % .-target .-value))
              :placeholder "start typing here ..."}]
     [:span
-     [:button {:on-click set-next-current-locale!} @current-locale]]]])
+     [:button {:on-click locales/set-next!} @current-locale]]]])
 
 
 (defn suggestion-view
@@ -127,7 +113,7 @@
         :on-click #(api-client/get-translations
                     app-translation-loaded
                     {:phrase phrase :from locale
-                     :dest-locales (dest-locales)})}
+                     :dest-locales (locales/dest-locales)})}
    phrase])
 
 (defn suggestions-view
@@ -180,7 +166,11 @@
   [_]
   [:div
    [:h3 "Smart Translate"]
-   [phrase-input-view]
+   [typeahead/phrase-input-view {:current-locale current-locale
+                                :phrase-input-val phrase-input-val
+                                :process-key-event process-key-event
+                                :translate translate
+                                :on-locale-click locales/set-next!}]
    (case @active-view
      :suggestions [suggestions-view]
      :app-translation [app-translation-view]

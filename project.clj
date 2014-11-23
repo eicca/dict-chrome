@@ -7,9 +7,11 @@
                  [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [cljs-ajax "0.2.6"]
                  [reagent "0.4.2"]
-                 [com.gibbonspace/clj-webdriver "0.7.0-SNAPSHOT"]]
+                 [com.gibbonspace/clj-webdriver "0.7.0-SNAPSHOT"]
+                 [com.cemerick/piggieback "0.1.3"]]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
 
   :source-paths ["src"]
   :test-paths ["test"]

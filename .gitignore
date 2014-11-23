@@ -1,3 +1,5 @@
 .lein-repl-history
 /target
 /extension/js/deps
+
+.nrepl-port
