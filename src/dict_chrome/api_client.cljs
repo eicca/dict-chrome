@@ -1,5 +1,6 @@
 (ns dict-chrome.api-client
-  (:require [ajax.core :refer [GET]]))
+  (:require [ajax.core :refer [GET]]
+            [dict-chrome.locales :as locales :refer [current-locale]]))
 
 (defn api-url
   [action]
@@ -12,8 +13,11 @@
         :handler handler}))
 
 (defn get-suggestions
-  [handler params]
-  (get-resource "/suggestions" handler params))
+  [input-value handler]
+  (get-resource "/suggestions" handler
+                {:phrase input-value
+                 :locales locales/user-locales
+                 :fallback-locale @current-locale}))
 
 (defn get-translations
   [handler params]

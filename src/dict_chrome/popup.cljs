@@ -3,52 +3,30 @@
             [reagent.core :as reagent :refer [atom]]
             [dict-chrome.api-client :as api-client]
             [dict-chrome.typeahead :as typeahead]
-            [dict-chrome.locales :as locales :refer [current-locale]]))
+            [dict-chrome.locales :as locales :refer [current-locale]]
+            [dict-chrome.active-view :as active-view]
+            [weasel.repl :as ws-repl]))
+
+(ws-repl/connect "ws://localhost:9001")
 
 (enable-console-print!)
 
-(defn indexate
-  [seq]
-  (map-indexed (fn [idx itm] (conj {:index idx} itm)) seq))
-
 ; Atoms ==============
 
-(def active-view (atom (keyword "")))
-
-(defn show!
-  [view-name]
-  (when-not (= @active-view view-name)
-    (reset! active-view view-name)))
-
 (def app-translation (atom {}))
-
-(def suggestions (atom {}))
-
-(def active-suggestion-index (atom 0))
-
-(def phrase-input-val (atom ""))
 
 ; API ================
 
 (defn app-translation-loaded
   [raw-response]
   (let [response (clojure.walk/keywordize-keys raw-response)]
-    (reset! app-translation response))
-  (show! :app-translation))
-
-(defn suggestions-loaded
-  [raw-response]
-  (let [response (clojure.walk/keywordize-keys raw-response)]
-    (reset! active-suggestion-index 0)
-    (reset! suggestions (indexate (take 7 response)))
-    (when-let [first-item (first response)]
-      (locales/set! (first-item :locale))))
-  (show! :suggestions))
+    (reset! app-translation response)))
 
 (defn translate
-  [input-phrase]
+  [input-phrase locale]
+  (active-view/set! :translation)
   (api-client/get-translations app-translation-loaded
-                               {:from @current-locale
+                               {:from locale
                                 :dest-locales (locales/dest-locales)
                                 :phrase input-phrase}))
 
@@ -60,66 +38,6 @@
     (.play audio)))
 
 ; DIM =============
-
-
-(defn autocomplete
-  [_ _ _ input-value]
-  (when (> (count input-value) 2)
-    (api-client/get-suggestions suggestions-loaded
-                                {:phrase input-value
-                                 :locales locales/user-locales
-                                 :fallback-locale @current-locale})))
-
-(defn change-active-suggestion
-  [new-index]
-  (when (and (>= new-index 0) (< new-index (count @suggestions)))
-    (reset! active-suggestion-index new-index)))
-
-(defn apply-suggestion
-  []
-  (let [suggestion (first
-                    (filter #(= (% :index) @active-suggestion-index)
-                            @suggestions))]
-    (reset! phrase-input-val (suggestion :phrase))))
-
-(defn process-key-event
-  [event]
-  (case (.-key event)
-    "ArrowDown" (change-active-suggestion (+ @active-suggestion-index 1))
-    "ArrowUp" (change-active-suggestion (- @active-suggestion-index 1))
-    "Tab" (#(.preventDefault event)
-           (apply-suggestion))
-    :default))
-
-(defn phrase-input-view
-  []
-  [:div.phrase-input-block
-   [:div.input-group
-    [:input {:type "text"
-             :value @phrase-input-val
-             :on-key-down process-key-event
-             :on-key-up (fn [event]
-                          (when (= (.-key event) "Enter")
-                            (translate (-> event .-target .-value))))
-             :on-change #(reset! phrase-input-val (-> % .-target .-value))
-             :placeholder "start typing here ..."}]
-    [:span
-     [:button {:on-click locales/set-next!} @current-locale]]]])
-
-
-(defn suggestion-view
-  [{:keys [phrase locale index]}]
-  [:li {:class (when (= index @active-suggestion-index) "active")
-        :on-click #(api-client/get-translations
-                    app-translation-loaded
-                    {:phrase phrase :from locale
-                     :dest-locales (locales/dest-locales)})}
-   phrase])
-
-(defn suggestions-view
-  []
-  [:ul.suggestions (for [suggestion @suggestions]
-                     [suggestion-view suggestion])])
 
 (defn sound-view
   [sound-url]
@@ -166,19 +84,12 @@
   [_]
   [:div
    [:h3 "Smart Translate"]
-   [typeahead/phrase-input-view {:current-locale current-locale
-                                :phrase-input-val phrase-input-val
-                                :process-key-event process-key-event
-                                :translate translate
-                                :on-locale-click locales/set-next!}]
-   (case @active-view
-     :suggestions [suggestions-view]
-     :app-translation [app-translation-view]
-     [:div.empty-view])])
+   [typeahead/main-view translate active-view]
+   (when (active-view/active? :translation)
+     [app-translation-view])])
 
 (defn run
   []
-  (reagent/render-component [popup-view] (.-body js/document))
-  (add-watch phrase-input-val :phrase-input-watcher autocomplete))
+  (reagent/render-component [popup-view] (.-body js/document)))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))

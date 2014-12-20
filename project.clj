@@ -8,6 +8,7 @@
                  [cljs-ajax "0.2.6"]
                  [reagent "0.4.2"]
                  [com.gibbonspace/clj-webdriver "0.7.0-SNAPSHOT"]
+                 [weasel "0.4.2"]
                  [com.cemerick/piggieback "0.1.3"]]
 
   :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
