@@ -12,12 +12,13 @@ goog.addDependency("../reagent/core.js", ['reagent.core'], ['reagent.impl.util',
 goog.addDependency("../dict_chrome/locales.js", ['dict_chrome.locales'], ['reagent.core', 'cljs.core']);
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
 goog.addDependency("../ajax/core.js", ['ajax.core'], ['goog.net.XhrManager', 'goog.net.XhrIo', 'goog.Uri.QueryData', 'goog.Uri', 'cljs.core', 'goog.net.EventType', 'goog.structs', 'goog.json.Serializer', 'clojure.string', 'cljs.reader', 'goog.events', 'goog.net.ErrorCode']);
-goog.addDependency("../dict_chrome/api_client.js", ['dict_chrome.api_client'], ['ajax.core', 'cljs.core', 'dict_chrome.locales']);
+goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
+goog.addDependency("../dict_chrome/api_client.js", ['dict_chrome.api_client'], ['ajax.core', 'cljs.core', 'dict_chrome.locales', 'clojure.walk']);
 goog.addDependency("../dict_chrome/active_view.js", ['dict_chrome.active_view'], ['reagent.core', 'cljs.core']);
-goog.addDependency("../dict_chrome/typeahead.js", ['dict_chrome.typeahead'], ['reagent.core', 'cljs.core', 'dict_chrome.locales', 'dict_chrome.api_client', 'dict_chrome.active_view']);
+goog.addDependency("../dict_chrome/translation.js", ['dict_chrome.translation'], ['reagent.core', 'cljs.core', 'dict_chrome.locales', 'dict_chrome.api_client', 'clojure.walk', 'dict_chrome.active_view']);
+goog.addDependency("../dict_chrome/typeahead.js", ['dict_chrome.typeahead'], ['reagent.core', 'cljs.core', 'dict_chrome.translation', 'dict_chrome.locales', 'dict_chrome.api_client', 'dict_chrome.active_view']);
 goog.addDependency("../clojure/browser/event.js", ['clojure.browser.event'], ['cljs.core', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.events']);
 goog.addDependency("../clojure/browser/net.js", ['clojure.browser.net'], ['goog.net.xpc.CfgFields', 'goog.net.XhrIo', 'goog.json', 'goog.Uri', 'cljs.core', 'goog.net.EventType', 'goog.net.xpc.CrossPageChannel', 'clojure.browser.event']);
 goog.addDependency("../weasel/impls/websocket.js", ['weasel.impls.websocket'], ['cljs.core', 'clojure.browser.net', 'goog.net.WebSocket', 'clojure.browser.event']);
 goog.addDependency("../weasel/repl.js", ['weasel.repl'], ['weasel.impls.websocket', 'cljs.core', 'clojure.browser.net', 'cljs.reader', 'clojure.browser.event']);
-goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
-goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['weasel.repl', 'reagent.core', 'dict_chrome.typeahead', 'cljs.core', 'dict_chrome.locales', 'dict_chrome.api_client', 'clojure.walk', 'dict_chrome.active_view']);
+goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['weasel.repl', 'reagent.core', 'dict_chrome.typeahead', 'cljs.core', 'dict_chrome.translation']);

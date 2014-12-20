@@ -1,6 +1,7 @@
 (ns dict-chrome.typeahead
   (:require [reagent.core :as reagent :refer [atom]]
             [dict-chrome.api-client :as api-client]
+            [dict-chrome.translation :as translation]
             [dict-chrome.active-view :as active-view]
             [dict-chrome.locales :as locales :refer [current-locale]]))
 
@@ -16,12 +17,11 @@
                seq))
 
 (defn suggestions-loaded
-  [raw-response]
-  (let [response (clojure.walk/keywordize-keys raw-response)]
-    (reset! active-suggestion-index 0)
-    (reset! suggestions (indexate (take 7 response)))
-    (when-let [first-item (first response)]
-      (locales/set! (first-item :locale)))))
+  [response]
+  (reset! active-suggestion-index 0)
+  (reset! suggestions (indexate (take 7 response)))
+  (when-let [first-item (first response)]
+    (locales/set! (first-item :locale))))
 
 (defn autocomplete
   [_ _ _ input-value]
@@ -43,9 +43,9 @@
     (reset! phrase-input-val (suggestion :phrase))))
 
 (defn process-key-event
-  [event translate]
+  [event]
   (case (.-key event)
-    "Enter" (translate @phrase-input-val @current-locale)
+    "Enter" (translation/translate! @phrase-input-val @current-locale)
     "ArrowDown" (change-active-suggestion 1)
     "ArrowUp" (change-active-suggestion -1)
     "Tab" (#(.preventDefault event)
@@ -53,32 +53,32 @@
     :default))
 
 (defn phrase-input-view
-  [translate]
+  [_]
   [:div.phrase-input-block
    [:div.input-group
     [:input {:type "text"
              :value @phrase-input-val
-             :on-key-down #(process-key-event % translate)
+             :on-key-down #(process-key-event %)
              :on-change #(reset! phrase-input-val (-> % .-target .-value))
              :placeholder "start typing here ..."}]
     [:span
      [:button {:on-click locales/set-next!} @current-locale]]]])
 
 (defn suggestion-view
-  [{:keys [phrase locale index]} translate]
+  [{:keys [phrase locale index]}]
   [:li {:class (when (= index @active-suggestion-index) "active")
-        :on-click #(translate phrase locale)}
+        :on-click #(translation/translate! phrase locale)}
    phrase])
 
 (defn suggestions-view
-  [translate]
+  [_]
   [:ul.suggestions (for [suggestion @suggestions]
-                     [suggestion-view suggestion translate])])
+                     [suggestion-view suggestion])])
 
 (defn main-view
-  [translate active-view]
+  [_]
   (add-watch phrase-input-val :phrase-input-watcher autocomplete)
   [:div
-   [phrase-input-view translate]
+   [phrase-input-view]
    (when (active-view/active? :suggestions)
-     [suggestions-view translate])])
+     [suggestions-view])])
