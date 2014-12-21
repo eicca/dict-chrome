@@ -32,6 +32,12 @@ h3 {
   font-weight: 400;
 }
 
+h3 .icon-cog {
+  color: #e5e5e5;
+  text-decoration: none;
+  float: right;
+}
+
 .phrase-input-block {
   padding: 15px 10px 0px 10px;
   position: relative;

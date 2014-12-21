@@ -8,11 +8,21 @@
 
 (enable-console-print!)
 
+(def options-link
+  ;; chrome 40 (str "chrome://extensions?options=" (.. js/chrome -runtime -id)))
+  "options.html")
+
+(defn open-options-page
+  []
+  ((.. js/chrome -tabs -create) (clj->js {:url options-link})))
+
 (defn popup-view
   [_]
   [:div
-   [:h3 "Smart Translate"]
-   [typeahead/main-view]
+   [:h3 "Smart Translate"
+    [:a.icon-cog {:href "#" :title "Settings"
+                  :on-click open-options-page} " "]]
+   [typeahead/main-view] ;; TODO focus on render
    [translation/main-view]])
 
 (defn run
