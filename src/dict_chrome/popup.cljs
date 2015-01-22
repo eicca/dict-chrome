@@ -4,7 +4,7 @@
             [dict-chrome.translation :as translation]
             [weasel.repl :as ws-repl]))
 
-(ws-repl/connect "ws://localhost:9001")
+;; (ws-repl/connect "ws://localhost:9001")
 
 (enable-console-print!)
 
@@ -20,13 +20,14 @@
   [_]
   [:div
    [:h3 "Smart Translate"
-    [:a.icon-cog {:href "#" :title "Settings"
+    ;; http://stackoverflow.com/questions/16701082
+    [:a.icon-cog {:href "#" :title "Settings" :tabIndex -1
                   :on-click open-options-page} " "]]
-   [typeahead/main-view] ;; TODO focus on render
+   [typeahead/main-view]
    [translation/main-view]])
 
 (defn run
   []
-  (reagent/render-component [popup-view] (.-body js/document)))
+  (reagent/render [popup-view] (.-body js/document)))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))

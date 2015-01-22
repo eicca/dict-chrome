@@ -20,11 +20,18 @@
 
 (defn get-suggestions
   [input-value handler]
-  (get-resource "/suggestions" handler
-                {:phrase input-value
-                 :locales locales/user-locales
-                 :fallback-locale @current-locale}))
+  (locales/get-user-locales
+   (fn [user-locales]
+     (get-resource "/suggestions" handler
+                   {:phrase input-value
+                    :locales user-locales
+                    :fallback-locale @current-locale}))))
 
 (defn get-translations
-  [handler params]
-  (get-resource "/translations" handler params))
+  [phrase from-locale handler]
+  (locales/get-dest-locales from-locale
+   (fn [dest-locales]
+     (get-resource "/translations" handler
+                   {:from from-locale
+                    :dest-locales dest-locales
+                    :phrase phrase}))))

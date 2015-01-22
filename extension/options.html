@@ -1,29 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Test Extension Options</title>
-    <style>
-      body: { padding: 10px; }
-    </style>
+    <title>Smart Translate Options</title>
+    <link href="css/chrome_shared.css" rel="stylesheet" type="text/css">
+    <link href="css/options.css" rel="stylesheet" type="text/css">
+    <link href="css/selectize.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    Favorite color:
-    <select id="color">
-      <option value="red">red</option>
-      <option value="green">green</option>
-      <option value="blue">blue</option>
-      <option value="yellow">yellow</option>
-    </select>
-
-    <label>
-      <input type="checkbox" id="like">
-      I like colors.
-    </label>
-
-    <div id="status"></div>
-    <button id="save">Save</button>
-
-    <script src="options.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/react.js"></script>
+    <script src="js/deps/goog/base.js"></script>
+    <script src="js/dict_chrome.js"></script>
+    <script src="js/require_options.js"></script>
   </body>
 </html>

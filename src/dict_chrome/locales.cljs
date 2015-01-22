@@ -1,27 +1,45 @@
 (ns dict-chrome.locales
   (:require [reagent.core :as reagent :refer [atom]]))
 
-;; This should be a reagent atom.
+(def supported-locales
+  [{:name "English" :code "en"}
+   {:name "German" :code "de"}
+   {:name "Russian" :code "ru"}
+   {:name "French" :code "fr"}
+   {:name "Italian" :code "it"}])
+
 (def current-locale (atom "en"))
 
-; TODO take it from settings.
-(def user-locales ["en" "de" "ru"])
+(def storage
+  (.. js/chrome -storage -sync))
 
-(def ^:private cycled-user-locales (cycle user-locales))
+(defn get-user-locales
+  [callback]
+  (.get storage "userLocales" #(callback (.-userLocales %))))
 
-(defn next-locale
-  [current-locale]
+(defn set-user-locales
+  [user-locales]
+  (if (< (count user-locales) 2)
+    "Select at least 2 languages."
+    (.set storage (clj->js {:userLocales user-locales}))))
+
+(defn- next-locale
+  [current-locale user-locales]
   (let [current-locale-index (.indexOf (to-array user-locales) current-locale)
-        next-locale (nth cycled-user-locales (inc current-locale-index))]
+        next-locale (nth (cycle user-locales) (inc current-locale-index))]
     next-locale))
 
-(defn dest-locales
-  []
-  (remove #(= % @current-locale) user-locales))
+(defn get-dest-locales
+  [from-locale callback]
+  (get-user-locales
+   (fn [user-locales]
+     (callback (remove #(= % from-locale) user-locales)))))
 
 (defn set-next!
   []
-  (reset! current-locale (next-locale @current-locale)))
+  (get-user-locales
+   (fn [user-locales]
+     (reset! current-locale (next-locale @current-locale user-locales)))))
 
 (defn set!
   [value]

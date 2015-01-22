@@ -15,10 +15,7 @@
 (defn translate!
   [input-phrase locale]
   (active-view/set! :translation)
-  (api-client/get-translations app-translation-loaded
-                               {:from locale
-                                :dest-locales (locales/dest-locales)
-                                :phrase input-phrase}))
+  (api-client/get-translations input-phrase locale app-translation-loaded))
 
 
 (defn play-sound
