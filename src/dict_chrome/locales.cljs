@@ -17,10 +17,16 @@
   [callback]
   (.get storage "userLocales" #(callback (.-userLocales %))))
 
-(defn set-user-locales
+(defn validate-user-locales
   [user-locales]
   (if (< (count user-locales) 2)
-    "Select at least 2 languages."
+    "select at least 2 languages."
+    nil))
+
+(defn set-user-locales!
+  [user-locales]
+  (if (< (count user-locales) 2)
+    "select at least 2 languages."
     (.set storage (clj->js {:userLocales user-locales}))))
 
 (defn- next-locale

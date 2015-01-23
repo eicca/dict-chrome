@@ -8,6 +8,20 @@
 
 (def user-locales (atom []))
 
+(def message (atom {}))
+
+(defn set-message!
+  [content type]
+  (reset! message {:content content :type type}))
+
+(defn set-error-message!
+  [content]
+  (set-message! content "error"))
+
+(defn set-success-message!
+  [content]
+  (set-message! content "success"))
+
 (defn update-user-locales
   []
   (this-as this (reset! user-locales
@@ -15,7 +29,11 @@
 
 (defn save-options
   []
-  (locales/set-user-locales @user-locales))
+  (let [error-message (locales/validate-user-locales @user-locales)]
+    (if error-message
+      (set-error-message! error-message)
+      (do (locales/set-user-locales! @user-locales)
+          (set-success-message! "Languages were saved.")))))
 
 (defn languages-select
   []
@@ -42,14 +60,30 @@
    [:hr]
    [:p "Select here languages which you're using
 (both known and learning languages)."]
-   [selectized-languages-select]])
+   [selectized-languages-select]
+   [:button {:on-click save-options} "Apply"]
+   [:div.message {:class (@message :type)}
+    (@message :content)]])
+
+(defn open-shortcuts-page
+  []
+  ((.. js/chrome -tabs -create)
+   #js{:url "chrome://extensions/configureCommands"}))
+
+(defn shortcuts-view
+  []
+  [:div
+   [:h1 "Shortcuts"]
+   [:hr]
+   [:a {:href "#" :on-click open-shortcuts-page}
+    "Change shortcuts"]])
 
 (defn options-view
   []
   [:div#main
    [:header "Smart Translate Options"]
    [languages-view]
-   [:button {:on-click save-options} "Apply"]])
+   [shortcuts-view]])
 
 (defn run
   []

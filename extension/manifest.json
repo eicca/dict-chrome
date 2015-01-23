@@ -18,17 +18,19 @@
 
   "options_page": "options.html",
 
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  },
+  // Chrome 40
+  // "options_ui": {
+  //   "page": "options.html",
+  //   "chrome_style": true
+  // },
 
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+A",
         "mac": "Command+Shift+A"
-      }
+      },
+      "global": true
     }
   },
 
