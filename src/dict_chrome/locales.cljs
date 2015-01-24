@@ -2,11 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]))
 
 (def supported-locales
-  [{:name "English" :code "en"}
-   {:name "German" :code "de"}
-   {:name "Russian" :code "ru"}
-   {:name "French" :code "fr"}
-   {:name "Italian" :code "it"}])
+  (js->clj (.-locale_codes js/dict_chrome) :keywordize-keys true))
 
 (def current-locale (atom "en"))
 
@@ -17,17 +13,28 @@
   [callback]
   (.get storage "userLocales" #(callback (.-userLocales %))))
 
+(def validation-rules
+  [{:cond #(< (count %) 2)
+    :message "Select at least 2 languages."}
+   {:cond #(> (count %) 4)
+    :message "Select at most 4 languages."}])
+
+(defn- first-broken-rule
+  [user-locales]
+  (first (filter
+          (fn [rule] ((rule :cond) user-locales))
+          validation-rules)))
+
 (defn validate-user-locales
   [user-locales]
-  (if (< (count user-locales) 2)
-    "select at least 2 languages."
-    nil))
+  (let [broken-rule (first-broken-rule user-locales)]
+    (if broken-rule
+      (broken-rule :message)
+      nil)))
 
 (defn set-user-locales!
   [user-locales]
-  (if (< (count user-locales) 2)
-    "select at least 2 languages."
-    (.set storage (clj->js {:userLocales user-locales}))))
+  (.set storage (clj->js {:userLocales user-locales})))
 
 (defn- next-locale
   [current-locale user-locales]

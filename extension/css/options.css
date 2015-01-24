@@ -5,6 +5,29 @@
 
 header {
   max-width: 700px;
-  margin: 0 auto 50px auto;
+  margin: 0 auto 30px auto;
   font-size: 48px;
+}
+
+.section {
+  margin-top: 30px;
+}
+
+.selectize-control {
+  padding-bottom: 10px;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.message.success {
+  background-color: rgb(232, 255, 232);
+  color: darkgreen;
+}
+
+.message.error {
+  background-color: rgb(255, 219, 219);
+  color: rgb(147, 0, 0);
 }

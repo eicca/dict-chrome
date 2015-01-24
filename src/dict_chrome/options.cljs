@@ -2,6 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]
             [dict-chrome.locales :as locales]))
 
+;; TODO move to appropriate place
 (extend-type js/HTMLCollection
   ISeqable
   (-seq [array] (array-seq array 0)))
@@ -40,7 +41,7 @@
   [:select {:multiple true
             :value @user-locales}
    (for [locale locales/supported-locales]
-     [:option {:value (locale :code)
+     [:option {:value (locale :alpha2)
                :on-change update-user-locales}
       (locale :name)])])
 
@@ -55,15 +56,17 @@
 
 (defn languages-view
   []
-  [:div
+  [:div.section
    [:h1 "Languages"]
    [:hr]
-   [:p "Select here languages which you're using
-(both known and learning languages)."]
+   [:p "Select here languages which you're using "
+    "(both known and learning languages)."]
    [selectized-languages-select]
    [:button {:on-click save-options} "Apply"]
-   [:div.message {:class (@message :type)}
-    (@message :content)]])
+   [:br] ;; br is needed because of some weird reagent/react behavior.
+   (when-not (empty? @message)
+     [:div.message {:class (@message :type)}
+      (@message :content)])])
 
 (defn open-shortcuts-page
   []
@@ -72,11 +75,13 @@
 
 (defn shortcuts-view
   []
-  [:div
+  [:div.section
    [:h1 "Shortcuts"]
    [:hr]
-   [:a {:href "#" :on-click open-shortcuts-page}
-    "Change shortcuts"]])
+   [:div "You can change pop-up shortcut by following "
+    [:a {:href "#" :on-click open-shortcuts-page}
+     "this link"] " and adjusting shortcut under 'Smart Translate'."
+    ]])
 
 (defn options-view
   []
