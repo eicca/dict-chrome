@@ -5,13 +5,11 @@ lein cljsbuild auto
 ```
 
 ## TODO
-- Fix initialization of user-locales and current-locale.
-Probably call some init function before calling reagent render.
 - Fix translation for 2 languages.
-- Better organize js deps with lates cljs version.
+- Better organize js deps with latest cljs version.
 - Add build for advanced compilation.
-- Add logo.
-- Update/add selenium specs.
+- Add extension page with tests (remove selenium specs then).
+- Reduce typeahead's api requests.
 - Suggestions for some languages (Chinese) are broken.
 - Cache api and client requests on server.
-- Add json schema to server (?)
+- Validate server requests (json schema?)
