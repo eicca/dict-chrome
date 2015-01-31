@@ -22,4 +22,4 @@ goog.addDependency("../clojure/browser/event.js", ['clojure.browser.event'], ['c
 goog.addDependency("../clojure/browser/net.js", ['clojure.browser.net'], ['goog.net.xpc.CfgFields', 'goog.net.XhrIo', 'goog.json', 'goog.Uri', 'cljs.core', 'goog.net.EventType', 'goog.net.xpc.CrossPageChannel', 'clojure.browser.event']);
 goog.addDependency("../weasel/impls/websocket.js", ['weasel.impls.websocket'], ['cljs.core', 'clojure.browser.net', 'goog.net.WebSocket', 'clojure.browser.event']);
 goog.addDependency("../weasel/repl.js", ['weasel.repl'], ['weasel.impls.websocket', 'cljs.core', 'clojure.browser.net', 'cljs.reader', 'clojure.browser.event']);
-goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['weasel.repl', 'reagent.core', 'dict_chrome.typeahead', 'cljs.core', 'dict_chrome.translation']);
+goog.addDependency("../dict_chrome/popup.js", ['dict_chrome.popup'], ['weasel.repl', 'reagent.core', 'dict_chrome.typeahead', 'cljs.core', 'dict_chrome.translation', 'dict_chrome.locales']);

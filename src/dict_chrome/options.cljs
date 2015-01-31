@@ -1,13 +1,11 @@
 (ns dict-chrome.options
   (:require [reagent.core :as reagent :refer [atom]]
-            [dict-chrome.locales :as locales]))
+            [dict-chrome.locales :as locales :refer [user-locales]]))
 
 ;; TODO move to appropriate place
 (extend-type js/HTMLCollection
   ISeqable
   (-seq [array] (array-seq array 0)))
-
-(def user-locales (atom []))
 
 (def message (atom {}))
 
@@ -23,17 +21,17 @@
   [content]
   (set-message! content "success"))
 
-(defn update-user-locales
+(defn set-user-locales
   []
-  (this-as this (reset! user-locales
-                        (-> this .-selectize .getValue))))
+  (this-as this (locales/set-user-locales!
+                 (-> this .-selectize .getValue))))
 
 (defn save-options
   []
-  (let [error-message (locales/validate-user-locales @user-locales)]
-    (if error-message
+  (let [error-message (locales/validate-user-locales)]
+    (if error-messag
       (set-error-message! error-message)
-      (do (locales/set-user-locales! @user-locales)
+      (do (locales/save-user-locales!)
           (set-success-message! "Languages were saved.")))))
 
 (defn languages-select
@@ -41,8 +39,7 @@
   [:select {:multiple true
             :value @user-locales}
    (for [locale locales/supported-locales]
-     [:option {:value (locale :alpha2)
-               :on-change update-user-locales}
+     [:option {:value (locale :alpha2)}
       (locale :name)])])
 
 (def selectized-languages-select
@@ -52,7 +49,7 @@
        (-> (reagent/dom-node component)
          js/jQuery
          (.selectize #js{:plugins #js["remove_button"]})
-         (.on "change" update-user-locales)))}))
+         (.on "change" set-user-locales)))}))
 
 (defn languages-view
   []
@@ -92,9 +89,8 @@
 
 (defn run
   []
-  (locales/get-user-locales
-   (fn [loaded-locales]
-     (reset! user-locales loaded-locales)
+  (locales/init
+   (fn []
      (reagent/render [options-view] (.-body js/document)))))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))

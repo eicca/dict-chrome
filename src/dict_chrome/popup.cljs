@@ -1,5 +1,6 @@
 (ns dict-chrome.popup
   (:require [reagent.core :as reagent]
+            [dict-chrome.locales :as locales]
             [dict-chrome.typeahead :as typeahead]
             [dict-chrome.translation :as translation]
             [weasel.repl :as ws-repl]))
@@ -28,6 +29,8 @@
 
 (defn run
   []
-  (reagent/render [popup-view] (.-body js/document)))
+  (locales/init
+   (fn []
+     (reagent/render [popup-view] (.-body js/document)))))
 
 (.addEventListener js/document "DOMContentLoaded" #(run))
