@@ -9,12 +9,8 @@ dict_chrome.locale_codes = [
     "alpha2": "bg"
   },
   {
-    "name": "Chinese Simplified",
-    "alpha2": "zh-CN"
-  },
-  {
-    "name": "Chinese Traditional",
-    "alpha2": "zh-TW"
+    "name": "Chinese",
+    "alpha2": "zh"
   },
   {
     "name": "Croatian",
