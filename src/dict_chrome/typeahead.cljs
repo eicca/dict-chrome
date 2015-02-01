@@ -29,12 +29,12 @@
   (active-view/set! :suggestions)
   (api-client/get-suggestions @phrase-input-val suggestions-loaded))
 
-(def thorttled-autocomplete (js/goog.async.Throttle. autocomplete 1500))
+(def throttled-autocomplete (js/goog.async.Throttle. autocomplete 1500))
 
 (defn- phrase-input-changed
   [_ _ _ input-value]
   (when (> (count input-value) 2)
-    (.fire thorttled-autocomplete)))
+    (.fire throttled-autocomplete)))
 
 (defn change-active-suggestion
   [offset]
@@ -42,17 +42,22 @@
     (when (and (>= new-index 0) (< new-index (count @suggestions)))
       (reset! active-suggestion-index new-index))))
 
-(defn apply-suggestion
+(defn- apply-suggestion
   []
   (let [suggestion (first
                     (filter #(= (% :index) @active-suggestion-index)
                             @suggestions))]
     (reset! phrase-input-val (suggestion :phrase))))
 
+(defn- translate-phrase
+  [phrase locale]
+  (.stop throttled-autocomplete)
+  (translation/translate! phrase locale))
+
 (defn process-key-event
   [event]
   (case (.-key event)
-    "Enter" (translation/translate! @phrase-input-val @current-locale)
+    "Enter" (translate-phrase @phrase-input-val @current-locale)
     "ArrowDown" (change-active-suggestion 1)
     "ArrowUp" (change-active-suggestion -1)
     "Tab" (#(.preventDefault event)
@@ -74,7 +79,7 @@
 (defn suggestion-view
   [{:keys [phrase locale index]}]
   [:li {:class (when (= index @active-suggestion-index) "active")
-        :on-click #(translation/translate! phrase locale)}
+        :on-click #(translate-phrase phrase locale)}
    phrase])
 
 (defn suggestions-view
