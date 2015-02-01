@@ -16,7 +16,7 @@ goog.addDependency("../clojure/walk.js", ['clojure.walk'], ['cljs.core']);
 goog.addDependency("../dict_chrome/api_client.js", ['dict_chrome.api_client'], ['ajax.core', 'cljs.core', 'dict_chrome.locales', 'clojure.walk']);
 goog.addDependency("../dict_chrome/active_view.js", ['dict_chrome.active_view'], ['reagent.core', 'cljs.core']);
 goog.addDependency("../dict_chrome/translation.js", ['dict_chrome.translation'], ['reagent.core', 'cljs.core', 'dict_chrome.locales', 'dict_chrome.api_client', 'clojure.walk', 'dict_chrome.active_view']);
-goog.addDependency("../dict_chrome/typeahead.js", ['dict_chrome.typeahead'], ['reagent.core', 'cljs.core', 'dict_chrome.translation', 'dict_chrome.locales', 'dict_chrome.api_client', 'dict_chrome.active_view']);
+goog.addDependency("../dict_chrome/typeahead.js", ['dict_chrome.typeahead'], ['goog.async.Throttle', 'reagent.core', 'cljs.core', 'dict_chrome.translation', 'dict_chrome.locales', 'dict_chrome.api_client', 'dict_chrome.active_view']);
 goog.addDependency("../dict_chrome/options.js", ['dict_chrome.options'], ['reagent.core', 'cljs.core', 'dict_chrome.locales']);
 goog.addDependency("../clojure/browser/event.js", ['clojure.browser.event'], ['cljs.core', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.events']);
 goog.addDependency("../clojure/browser/net.js", ['clojure.browser.net'], ['goog.net.xpc.CfgFields', 'goog.net.XhrIo', 'goog.json', 'goog.Uri', 'cljs.core', 'goog.net.EventType', 'goog.net.xpc.CrossPageChannel', 'clojure.browser.event']);

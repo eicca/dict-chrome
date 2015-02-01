@@ -9,7 +9,6 @@ lein cljsbuild auto
 - Better organize js deps with latest cljs version.
 - Add build for advanced compilation.
 - Add extension page with tests (remove selenium specs then).
-- Reduce typeahead's api requests.
 - Suggestions for some languages (Chinese) are broken.
 - Cache api and client requests on server.
 - Validate server requests (json schema?)

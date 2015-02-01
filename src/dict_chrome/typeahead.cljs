@@ -1,5 +1,6 @@
 (ns dict-chrome.typeahead
   (:require [reagent.core :as reagent :refer [atom]]
+            [goog.async.Throttle]
             [dict-chrome.api-client :as api-client]
             [dict-chrome.translation :as translation]
             [dict-chrome.active-view :as active-view]
@@ -24,10 +25,16 @@
     (locales/set! (first-item :locale))))
 
 (defn autocomplete
-  [_ _ _ input-value]
+  []
   (active-view/set! :suggestions)
+  (api-client/get-suggestions @phrase-input-val suggestions-loaded))
+
+(def thorttled-autocomplete (js/goog.async.Throttle. autocomplete 1500))
+
+(defn- phrase-input-changed
+  [_ _ _ input-value]
   (when (> (count input-value) 2)
-    (api-client/get-suggestions input-value suggestions-loaded)))
+    (.fire thorttled-autocomplete)))
 
 (defn change-active-suggestion
   [offset]
@@ -77,7 +84,7 @@
 
 (defn main-view
   [_]
-  (add-watch phrase-input-val :phrase-input-watcher autocomplete)
+  (add-watch phrase-input-val :phrase-input-watcher phrase-input-changed)
   [:div
    [phrase-input-view]
    (when (active-view/active? :suggestions)
