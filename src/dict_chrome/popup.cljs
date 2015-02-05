@@ -17,6 +17,13 @@
   []
   ((.. js/chrome -tabs -create) (clj->js {:url options-link})))
 
+(defn promt-to-options-view
+  [_]
+  [:div.promt-to-options
+   [:span
+    "Setup your languages on the "]
+   [:a {:href "#" :on-click open-options-page} "options page."]])
+
 (defn popup-view
   [_]
   [:div
@@ -24,8 +31,11 @@
     ;; http://stackoverflow.com/questions/16701082
     [:a.icon-cog {:href "#" :title "Settings" :tabIndex -1
                   :on-click open-options-page} " "]]
-   [typeahead/main-view]
-   [translation/main-view]])
+   (if (locales/not-enough)
+     [promt-to-options-view]
+     [:div
+      [typeahead/main-view]
+      [translation/main-view]])])
 
 (defn run
   []

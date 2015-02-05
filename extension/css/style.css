@@ -15,6 +15,11 @@ body {
   font-size: 14px;
 }
 
+.promt-to-options {
+  margin: 15px;
+  font-size: 17px;
+}
+
 [placeholder]:focus::-webkit-input-placeholder {
   transition: opacity 0.5s 1.5s ease;
   opacity: 0.2;

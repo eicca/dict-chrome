@@ -38,6 +38,10 @@
       (broken-rule :message)
       nil)))
 
+(defn not-enough
+  []
+  (< (count (js->clj @user-locales)) 2))
+
 (defn set-user-locales!
   [new-user-locales]
   (reset! user-locales new-user-locales))
