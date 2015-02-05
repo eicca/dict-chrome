@@ -29,7 +29,7 @@
 (defn save-options
   []
   (let [error-message (locales/validate-user-locales)]
-    (if error-messag
+    (if error-message
       (set-error-message! error-message)
       (do (locales/save-user-locales!)
           (set-success-message! "Languages were saved.")))))
