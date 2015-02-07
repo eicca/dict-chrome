@@ -15,6 +15,8 @@ lein with-profile production cljsbuild once
 Remove inclusion of `js/deps/goog/base.js` and `js/require_popup(options)`
 from `popup.html` and `options.html`.
 
+Remove `js/deps` folder.
+
 ## TODO
 - Add extension page with tests (remove selenium specs then).
 - Make a hot key for switching locale. Trigger suggestions after switching.
