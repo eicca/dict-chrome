@@ -7,7 +7,6 @@
 
 (def app-translation (atom {}))
 
-
 (defn app-translation-loaded
   [response]
   (reset! app-translation response))
@@ -16,7 +15,6 @@
   [input-phrase locale]
   (active-view/set! :translation)
   (api-client/get-translations input-phrase locale app-translation-loaded))
-
 
 (defn play-sound
   [sound-url]
