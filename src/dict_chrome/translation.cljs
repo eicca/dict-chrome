@@ -20,7 +20,7 @@
 
 (defn play-sound
   [sound-url]
-  (let [audio (js/Audio. sound-url)]
+  (let [audio (js/Audio. (str "https:" sound-url))]
     (.play audio)))
 
 (defn sound-view
