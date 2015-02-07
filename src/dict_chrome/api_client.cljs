@@ -7,6 +7,7 @@
 (defn- api-url
   [action]
   (str "http://dict-server.random-data.com" action))
+  ;; (str "http://localhost:3000" action))
 
 (defn- on-response
   [raw-response handler]

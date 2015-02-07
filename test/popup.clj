@@ -3,7 +3,7 @@
             [clj-webdriver.taxi :refer :all]
             [clj-webdriver.core :refer [key-code]]))
 
-(def file-url "file:///Users/mike/dev/dict/dict-chrome/extension/popup.html")
+(def file-url "file:///Users/mdyakov/dev/stuff/dict-chrome/extension/popup.html")
 
 (defn prepare-env
   []

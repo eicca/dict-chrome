@@ -87,10 +87,8 @@
    [languages-view]
    [shortcuts-view]])
 
-(defn run
+(defn ^:export run
   []
   (locales/init
    (fn []
      (reagent/render [options-view] (.-body js/document)))))
-
-(.addEventListener js/document "DOMContentLoaded" #(run))

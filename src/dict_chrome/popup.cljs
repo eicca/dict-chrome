@@ -2,8 +2,8 @@
   (:require [reagent.core :as reagent]
             [dict-chrome.locales :as locales]
             [dict-chrome.typeahead :as typeahead]
-            [dict-chrome.translation :as translation]
-            [weasel.repl :as ws-repl]))
+            [dict-chrome.translation :as translation]))
+            ;; [weasel.repl :as ws-repl]))
 
 ;; (ws-repl/connect "ws://localhost:9001")
 
@@ -37,10 +37,8 @@
       [typeahead/main-view]
       [translation/main-view]])])
 
-(defn run
+(defn ^:export run
   []
   (locales/init
    (fn []
      (reagent/render [popup-view] (.-body js/document)))))
-
-(.addEventListener js/document "DOMContentLoaded" #(run))

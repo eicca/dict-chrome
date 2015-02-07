@@ -1,8 +1,8 @@
 (ns dict-chrome.locales
-  (:require [reagent.core :as reagent :refer [atom]]))
+  (:require [reagent.core :as reagent :refer [atom]]
+            [dict-chrome.locale-codes]))
 
-(def supported-locales
-  (js->clj (.-locale_codes js/dict_chrome) :keywordize-keys true))
+(def supported-locales dict-chrome.locale-codes/all)
 
 (def current-locale (atom ""))
 
@@ -15,7 +15,7 @@
   [callback]
   (.get storage "userLocales"
         (fn [res]
-          (reset! user-locales (.-userLocales res))
+          (reset! user-locales (aget res "userLocales"))
           (reset! current-locale (first @user-locales))
           (callback))))
 
