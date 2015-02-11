@@ -19,3 +19,4 @@ from `popup.html` and `options.html`.
 - Add extension page with tests (remove selenium specs then).
 - Make a hot key for switching locale. Trigger suggestions after switching.
 - Cache api and client requests on server.
+- Fix content flushing.
