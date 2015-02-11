@@ -24,10 +24,27 @@
                                         :optimizations :none}}}}
 
   :profiles {:dev {:repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-                   :env {:dev? true}
-                   :cljsbuild {:builds {:app {:compiler {:source-map true}}}}}
 
-             :production {:env {:production true}
+                   :dependencies [[pjstadig/humane-test-output "0.6.0"]]
+
+                   :plugins [[com.cemerick/clojurescript.test "0.3.3"]]
+
+                   :injections [(require 'pjstadig.humane-test-output)
+                                (pjstadig.humane-test-output/activate!)]
+
+                   :env {:dev? true}
+
+                   :cljsbuild {:builds {:app {:compiler {:source-map true}}
+                                        :test {:source-paths ["src" "test"]
+                                               :compiler {:output-to "test/target/test.js"
+                                                          :optimizations :whitespace
+                                                          :pretty-print true}}}
+                               :test-commands {"unit" ["slimerjs" :runner
+                                                       "test/vendor/console-polyfill.js"
+                                                       "test/target/test.js"]}}}
+
+  :production {:env {:production true}
+
                           :cljsbuild {:builds {:app
                                                {:compiler
                                                 {:optimizations :advanced

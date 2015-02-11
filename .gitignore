@@ -3,3 +3,6 @@
 /extension/js/deps
 
 .nrepl-port
+
+extension.crx
+extension.pem

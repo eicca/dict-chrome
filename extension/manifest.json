@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "Smart Translate",
-  "description": "Smart Translate extension (add more).", //TODO
+  "description": "Your smartest multi language translator.",
   "version": "1.0",
   "incognito": "split",
 
@@ -21,12 +21,6 @@
   },
 
   "options_page": "options.html",
-
-  // Chrome 40
-  // "options_ui": {
-  //   "page": "options.html",
-  //   "chrome_style": true
-  // },
 
   "commands": {
     "_execute_browser_action": {
