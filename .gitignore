@@ -1,6 +1,7 @@
 .lein-repl-history
 /target
 /extension/js/deps
+/extension/js/dict_chrome.js
 
 .nrepl-port
 

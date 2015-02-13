@@ -7,6 +7,8 @@ lein cljsbuild auto
 Open `popup_test.html` page inside of extension.
 
 ## Packaging
+Remove `js/dict_chrome.js`.
+
 Compile with advanced optimization:
 ```
 lein with-profile production cljsbuild once
