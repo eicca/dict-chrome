@@ -31,3 +31,7 @@ header {
   background-color: rgb(255, 219, 219);
   color: rgb(147, 0, 0);
 }
+
+.shortcuts-list li {
+  margin: 10px;
+}

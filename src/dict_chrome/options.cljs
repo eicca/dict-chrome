@@ -75,10 +75,14 @@
   [:div.section
    [:h1 "Shortcuts"]
    [:hr]
-   [:div "You can change pop-up shortcut by following "
-    [:a {:href "#" :on-click open-shortcuts-page}
-     "this link"] " and adjusting shortcut under 'Smart Translate'."
-    ]])
+   [:ul.shortcuts-list
+    [:li "Open extension: You can change pop-up shortcut by following "
+     [:button.link-button {:on-click open-shortcuts-page} "this link"]
+     " and adjusting shortcut under 'Smart Translate'."]
+    [:li "Translate phrase: "[:b "Enter ⏎"]]
+    [:li "Apply selected suggestion: "[:b "TAB ↹"]]
+    [:li "Select next suggestion: "[:b "Arrow Down ↓"]]
+    [:li "Select previous suggestion: "[:b "Arrow Up ↑"]]]])
 
 (defn options-view
   []
