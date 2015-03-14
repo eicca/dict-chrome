@@ -7,7 +7,6 @@
   "incognito": "split",
 
   "permissions": [
-    "http://localhost/",
     "storage"
     ],
 
