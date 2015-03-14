@@ -1,3 +1,6 @@
+## Chrome web store
+https://chrome.google.com/webstore/detail/smart-translate/fmllglnmbaiehbdnnmjppbjjcffnhkcp
+
 ## Development setup
 ```
 lein deps
