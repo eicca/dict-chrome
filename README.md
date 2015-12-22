@@ -3,11 +3,12 @@ https://chrome.google.com/webstore/detail/smart-translate/fmllglnmbaiehbdnnmjppb
 
 ## Development setup
 ```
-lein deps
-lein cljsbuild auto
+docker build -t dict-chrome .
+docker run -it --rm -v "$PWD/extension":/usr/src/app/extension -v "$PWD/src":/usr/src/app/src -p 3449:3449 -p 7888:7888 dict-chrome
 ```
 
-Open `popup_test.html` page inside of extension.
+Add `./extension` as unpacked chrome extension.
+Open `popup_test.html` page **inside of** extension.
 
 ## Packaging
 Remove `js/dict_chrome.js`.

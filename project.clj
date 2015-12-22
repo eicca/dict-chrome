@@ -2,7 +2,7 @@
   :description "Smart translate chrome extension."
   :url "https://chrome.google.com/webstore/detail/smart-translate/fmllglnmbaiehbdnnmjppbjjcffnhkcp"
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
+  :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "0.0-2760"]
                  [cljs-ajax "0.2.6"]
                  [reagent "0.5.0-alpha2"]
