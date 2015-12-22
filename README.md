@@ -28,3 +28,4 @@ Remove `js/deps` folder.
 - Make a hot key for switching locale. Trigger suggestions after switching.
 - Cache api and client requests on server.
 - Fix content flushing.
+- Fix autofocus
