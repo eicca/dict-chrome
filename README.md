@@ -23,6 +23,13 @@ from `popup.html` and `options.html`.
 
 Remove `js/deps` folder.
 
+zip `./extension` folder:
+```
+zip -r extension.zip extension 
+```
+
+Go to https://chrome.google.com/webstore/developer/dashboard and upload new package.
+
 ## TODO
 - Add extension page with tests (remove selenium specs then).
 - Add newrelic monitoring for API.
