@@ -18,7 +18,7 @@
 
 (defn play-sound
   [sound-url]
-  (let [audio (js/Audio. (str "https:" sound-url))]
+  (let [audio (js/Audio. sound-url)]
     (.play audio)))
 
 (defn sound-view
@@ -38,8 +38,8 @@
 
 (defn translation-view
   [translation]
-  [:li {:class (translation :source-name)}
-   [:a {:href (translation :source-url) :target "_blank"} (translation :phrase)]
+  [:li {:class (translation :origin-name)}
+   [:a {:href (translation :web-url) :target "_blank"} (translation :translated-text)]
    [lexical-view (translation :lexical)]
    [sound-view (first (translation :sounds))]])
 
@@ -48,10 +48,10 @@
   [:div
    [:div.meta-translation-header
     [:div.language-block
-     [:span] [:span (meta-translation :dest)]
-     [source-view (meta-translation :source-url)]]]
-   [:ul.translations (for [translation (take 3 (meta-translation :translations))]
-                       ^{:key (translation :phrase)}
+     [:span] [:span (meta-translation :target)]
+     [source-view (meta-translation :web-url)]]]
+   [:ul.translations (for [translation (take 3 (meta-translation :meanings))]
+                       ^{:key (translation :translated-text)}
                        [translation-view translation])]])
 
 (defn app-translation-view
@@ -60,9 +60,9 @@
    [:div.from-phrase
     [:span "Translating: "]
     [:a {:href (@app-translation :wiktionary-link) :target "_blank"}
-     (@app-translation :phrase)]]
-   [:ul (for [meta-translation (@app-translation :meta-translations)]
-          ^{:key (meta-translation :dest)}
+     (@app-translation :query)]]
+   [:ul (for [meta-translation (@app-translation :translations)]
+          ^{:key (meta-translation :target)}
           [meta-translation-view meta-translation])]])
 
 (defn main-view

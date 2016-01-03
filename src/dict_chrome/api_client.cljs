@@ -1,35 +1,37 @@
 (ns dict-chrome.api-client
   (:require clojure.walk
-            [ajax.core :refer [GET]]
+            [ajax.core :refer [POST json-request-format]]
             [dict-chrome.locales :as locales :refer [current-locale
                                                      user-locales]]))
 
+
 (defn- api-url
   [action]
-  (str "http://dict-server.random-data.com" action))
-  ;; (str "http://localhost:3000" action))
+  (str "http://translate-service-746109927.eu-west-1.elb.amazonaws.com" action))
+  ;; (str "http://localhost:8080" action))
 
 (defn- on-response
   [raw-response handler]
   (let [response (clojure.walk/keywordize-keys raw-response)]
     (handler response)))
 
-(defn- get-resource
+(defn- post-resource
   [resource-path handler params]
-  (GET (api-url resource-path)
+  (POST (api-url resource-path)
        {:params params
+        :format (json-request-format)
         :handler #(on-response % handler)}))
 
 (defn get-suggestions
   [input-value handler]
-  (get-resource "/suggestions" handler
-                {:phrase input-value
+  (post-resource "/suggestions" handler
+                {:query input-value
                  :locales @user-locales
                  :fallback-locale @current-locale}))
 
 (defn get-translations
   [phrase from-locale handler]
-  (get-resource "/translations" handler
-                {:from from-locale
-                 :dest-locales (locales/dest-locales from-locale)
-                 :phrase phrase}))
+  (post-resource "/translations" handler
+                {:source from-locale
+                 :targets (locales/dest-locales from-locale)
+                 :query phrase}))

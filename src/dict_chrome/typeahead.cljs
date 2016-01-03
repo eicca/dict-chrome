@@ -72,6 +72,7 @@
              :value @phrase-input-val
              :on-key-down #(process-key-event %)
              :on-change #(reset! phrase-input-val (-> % .-target .-value))
+             :maxLength 50
              :placeholder "start typing here ..."}]
     [:span
      [:button {:on-click locales/set-next!} @current-locale]]]])

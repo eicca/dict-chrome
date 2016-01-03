@@ -3,15 +3,18 @@
   :url "https://chrome.google.com/webstore/detail/smart-translate/fmllglnmbaiehbdnnmjppbjjcffnhkcp"
 
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "0.0-2760"]
-                 [cljs-ajax "0.2.6"]
-                 [reagent "0.5.0-alpha2"]
-                 [com.gibbonspace/clj-webdriver "0.7.0-SNAPSHOT"]
-                 [weasel "0.4.2"]
-                 [com.cemerick/piggieback "0.1.3"]]
+                 [org.clojure/clojurescript "1.7.170"]
+                 [cljs-ajax "0.5.2"]
+                 [reagent "0.5.1"]
+                 [lein-cljsbuild/cljs-compat "1.0.0-SNAPSHOT"]
+                 [fs "1.1.2"]]
 
-  :plugins [[lein-cljsbuild "1.0.4-SNAPSHOT"]]
+  :plugins [[lein-cljsbuild "1.1.2"]]
   :hooks [leiningen.cljsbuild]
+
+  :mirrors {#"clojars" {:name "Clojar Mirror"
+                        :url "https://clojars-mirror.tcrawley.org/repo/"
+                        :repo-manager true}}
 
   :source-paths ["src"]
   :test-paths ["test"]
@@ -23,9 +26,7 @@
                                         :pretty-print true
                                         :optimizations :none}}}}
 
-  :profiles {:dev {:repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-                   :env {:dev? true}
-                   :cljsbuild {:builds {:app {:compiler {:source-map true}}}}}
+  :profiles {:dev {}
              :production {:env {:production true}
                           :cljsbuild {:builds {:app
                                                {:compiler

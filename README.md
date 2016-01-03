@@ -4,7 +4,7 @@ https://chrome.google.com/webstore/detail/smart-translate/fmllglnmbaiehbdnnmjppb
 ## Development setup
 ```
 docker build -t dict-chrome .
-docker run -it --rm -v "$PWD/extension":/usr/src/app/extension -v "$PWD/src":/usr/src/app/src -p 3449:3449 -p 7888:7888 dict-chrome
+docker run -it --rm -v "$PWD/extension":/usr/src/app/extension -v "$PWD/src":/usr/src/app/src dict-chrome
 ```
 
 Add `./extension` as unpacked chrome extension.
@@ -15,7 +15,7 @@ Remove `js/dict_chrome.js`.
 
 Compile with advanced optimization:
 ```
-lein with-profile production cljsbuild once
+docker run -it --rm -v "$PWD/extension":/usr/src/app/extension -v "$PWD/src":/usr/src/app/src dict-chrome with-profile production cljsbuild once
 ```
 
 Remove inclusion of `js/deps/goog/base.js` and `js/require_popup(options)`
